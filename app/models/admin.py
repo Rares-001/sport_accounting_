@@ -1,17 +1,19 @@
+# app/models/admin.py
+
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import db, login_manager
 from flask_login import UserMixin
 
 
-class User(UserMixin, db.Model):
-    __tablename__ = 'users'
+class Admin(db.Model, UserMixin):
+    __tablename__ = 'admin'
 
     id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String(255))
+    last_name = db.Column(db.String(255))
     email = db.Column(db.String(255), unique=True, index=True)
-    username = db.Column(db.String(255), unique=True, index=True)
     password_hash = db.Column(db.String(255))
-
-    transactions = db.relationship('Transaction', backref='user', lazy='dynamic')
+    active = db.Column(db.Boolean(), default=True)
 
     @property
     def password(self):
@@ -25,10 +27,9 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
     def __repr__(self):
-        return '<User %r>' % self.username
+        return '<Admin %r>' % self.email
+
 
 @login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
-
-
+def load_admin(admin_id):
+    return Admin.query.get(int(admin_id))
