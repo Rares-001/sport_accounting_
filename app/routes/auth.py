@@ -29,30 +29,29 @@ def register():
         })
 
 
-@auth_bp.route('/login', methods=['POST'])
+@auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm(request.form)
-    if form.validate():
+    if form.validate_on_submit():
         email = form.email.data
         password = form.password.data
 
         user = authenticate_user(email=email, password=password)
 
         if user:
-            token = generate_token(user.id)
-            return jsonify({
-                'success': True,
-                'message': 'Login successful.',
-                'token': token
-            })
+            login_user(user)
+            flash('You have been logged in!', 'success')
+            return redirect(url_for('home.index'))
         else:
-            return jsonify({
-                'success': False,
-                'message': 'Invalid email or password.'
-            })
-    else:
-        return jsonify({
-            'success': False,
-            'message': 'Login failed.',
-            'errors': form.errors
-        })
+            flash('Invalid email or password.', 'error')
+            return redirect(url_for('auth.login'))
+
+    return render_template('login.html', form=form)
+
+
+@auth_bp.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('You have been logged out!', 'success')
+    return redirect(url_for('home.index'))

@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from models.transaction import Transaction
+from app.models.transaction import Transaction
 
 transaction_bp = Blueprint('transaction', __name__)
 

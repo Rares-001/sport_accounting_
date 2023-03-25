@@ -7,9 +7,9 @@
 </head>
 <body>
     <nav>
-        <a href="/index">Home</a>
-        <a href="/login">Login</a>
-        <a href="/register">Register</a>
+        <a href="{{ url_for('home.index') }}">Home</a>
+        <a href="{{ url_for('auth.login') }}">Login</a>
+        <a href="{{ url_for('auth.register') }}">Register</a>
     </nav>
 
     {% if message %}

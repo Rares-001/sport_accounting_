@@ -1,8 +1,7 @@
 from flask import Blueprint, jsonify, request
 from sqlalchemy.exc import IntegrityError
 
-from models import db
-from app.models import db
+from app.models.club import Club
 
 club_blueprint = Blueprint('club', __name__, url_prefix='/clubs')
 
