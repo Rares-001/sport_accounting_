@@ -38,7 +38,11 @@ ca = certifi.where()
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    if 'customer_id' in session:
+        return redirect(url_for('dashboard'))
+    else:
+        return redirect(url_for('login'))
+
 
 #---------------------------------------
 
@@ -111,6 +115,11 @@ def login():
 @app.route('/dashboard')
 @login_required
 def dashboard():
+    # Check if customer_id exists in session
+    if 'customer_id' not in session:
+        flash('Please login to access your dashboard.', 'error')
+        return redirect(url_for('login'))
+
     # Retrieve customer information from Postgres
     customer = Customer.query.filter_by(customer_id=session['customer_id']).first()
 
@@ -130,9 +139,9 @@ def dashboard():
 
 @app.route('/logout')
 def logout():
-    if 'customer_id' in session:
-        session.pop('customer_id')
+    session.clear()
     return redirect(url_for('login'))
+
 
 
 
