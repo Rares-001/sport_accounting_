@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Dashboard</h1>
+
+  <h2>Welcome {{ customer.first_name }} {{ customer.last_name }}!</h2>
+  <ul>
+    <li>Username: {{ customer.username }}</li>
+    <li>Email: {{ customer.email }}</li>
+    <li>Phone Number: {{ customer.phone_number }}</li>
+    <li>Address: {{ customer.address }}</li>
+  </ul>
+
+  <p>MT940 content:</p>
+  <pre>{{ mt940_content }}</pre>
+{% endblock %}
