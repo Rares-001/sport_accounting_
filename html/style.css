@@ -219,3 +219,49 @@ footer{
 }
 
 /* End of user page */
+
+/* Start of accounting Page */
+.accouting-conatiner{
+  display: grid;
+  grid-template-rows: auto 100vh auto;
+}
+.acc-main{
+  display: grid;
+  grid-template-columns: 50vw 50vw;
+  background-color: #EDCECC;
+  padding: 5vh;
+}
+.acc-invoice{
+  height: 30vh;
+  width: 30vw;
+  background-color: aliceblue;
+  padding: 3vh;
+  border: 2px solid black;
+  border-radius: 5px;
+}
+.acc-expenses{
+  height: 30vh;
+  width: 30vw;
+  background-color: aliceblue;
+  padding: 3vh;
+  border: 2px solid black;
+  border-radius: 5px;
+}
+.acc-profit{
+  height: 30vh;
+  width: 30vw;
+  background-color: aliceblue;
+  padding: 3vh;
+  border: 2px solid black;
+  border-radius: 5px;
+}
+.acc-sales{
+  height: 30vh;
+  width: 30vw;
+  background-color: aliceblue;
+  padding: 3vh;
+  border: 2px solid black;
+  border-radius: 5px;
+}
+
+/* End of accounting page */
