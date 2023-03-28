@@ -34,3 +34,4 @@ WHERE Transaction.customerID = Customer.customerID AND Transaction.clubID = Club
 INNER JOIN Bank
 ON Bank.bankID = Transaction.bankID;
 -------------------------------------------------
+
