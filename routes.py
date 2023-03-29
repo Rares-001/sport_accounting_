@@ -56,7 +56,7 @@ def upload_files():
         FinalVersion = json.loads(translated)
         print(translated)
         records.insert_one(FinalVersion)
-        return render_template("upload.html")
+     return render_template("upload.html")
        
 #This is the transaction page which will show you the transactions
 @app.route('/transactions.html')
