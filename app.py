@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from models.customer import Customer
 from models.club import Club
+from models.admin import Admin
 from models.bank import Bank
 from database import db as db_instance
 from sqlalchemy import text
@@ -11,7 +12,6 @@ import pymongo
 from pymongo import MongoClient
 import certifi
 import ssl
-
 
 app = Flask(__name__)
 app.config.from_object('config')
@@ -25,7 +25,8 @@ login_manager.init_app(app)
 
 db_instance.init_app(app)
 
-client = pymongo.MongoClient("mongodb+srv://Rares:admin@cluster0.y9osbya.mongodb.net/?retryWrites=true&w=majorit", tlsCAFile=certifi.where())
+client = pymongo.MongoClient("mongodb+srv://Rares:admin@cluster0.y9osbya.mongodb.net/?retryWrites=true&w=majorit",
+                             tlsCAFile = certifi.where())
 db = client.get_database("test")
 
 MT940_COLLECTION = "MTFiles_records"
@@ -34,15 +35,15 @@ collection = db[MT940_COLLECTION]
 ca = certifi.where()
 
 
-#---------------------------------------
+# ---------------------------------------
 
-#@app.route('/')
-#def index():
-    #if 'customer_id' in session:
-        #return redirect(url_for('dashboard'))
-    #else:
-        #return redirect(url_for('login'))
-        
+# @app.route('/')
+# def index():
+# if 'customer_id' in session:
+# return redirect(url_for('dashboard'))
+# else:
+# return redirect(url_for('login'))
+
 @app.route('/')
 def index():
     if current_user.is_authenticated:
@@ -52,15 +53,16 @@ def index():
     return render_template('index.html')
 
 
-#---------------------------------------
+# ---------------------------------------
 
 @login_manager.user_loader
 def load_user(user_id):
     return Customer.query.get(int(user_id))
 
-#---------------------------------------
 
-@app.route('/register', methods=['GET', 'POST'])
+# ---------------------------------------
+
+@app.route('/register', methods = ['GET', 'POST'])
 def register():
     if request.method == 'POST':
         username = request.form['username']
@@ -72,17 +74,17 @@ def register():
         address = request.form['address']
         clubid = request.form['club']
 
-        hashed_password = generate_password_hash(password, method='sha256')
+        hashed_password = generate_password_hash(password, method = 'sha256')
 
         new_customer = Customer(
-            username=username,
-            password_=hashed_password,
-            first_name=first_name,
-            last_name=last_name,
-            email=email,
-            phone_number=phone_number,
-            address=address,
-            clubid=clubid
+            username = username,
+            password_ = hashed_password,
+            first_name = first_name,
+            last_name = last_name,
+            email = email,
+            phone_number = phone_number,
+            address = address,
+            clubid = clubid
         )
 
         db_instance.session.add(new_customer)
@@ -91,21 +93,22 @@ def register():
         return redirect(url_for('login'))
 
     clubs = Club.query.all()
-    return render_template('register.html', clubs=clubs)
+    return render_template('register.html', clubs = clubs)
 
-#---------------------------------------
 
-@app.route('/login', methods=['GET', 'POST'])
+# ---------------------------------------
+
+@app.route('/login', methods = ['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form['username']
+        identifier = request.form['identifier']
         password = request.form['password']
 
-        customer = Customer.query.filter_by(username=username).first()
-        admin = Admin.query.filter_by(username=username).first()
+        customer = Customer.query.filter_by(username = identifier).first()
+        admin = Admin.query.filter_by(email = identifier).first()
 
         if customer is None and admin is None:
-            flash('Invalid username')
+            flash('Invalid username or email')
             return redirect(url_for('login'))
 
         if customer is not None:
@@ -127,7 +130,7 @@ def login():
     return render_template('login.html')
 
 
-#---------------------------------------
+# ---------------------------------------
 
 @app.route('/dashboard')
 @login_required
@@ -138,7 +141,7 @@ def dashboard():
         return redirect(url_for('login'))
 
     # Retrieve customer information from Postgres
-    customer = Customer.query.filter_by(customer_id=session['customer_id']).first()
+    customer = Customer.query.filter_by(customer_id = session['customer_id']).first()
 
     # Retrieve MT940 file content from MongoDB
     mt940_document = collection.find_one()
@@ -149,10 +152,10 @@ def dashboard():
         mt940_content = mt940_document.get('file_content', '')
 
     # Pass customer and MT940 content to dashboard template
-    return render_template('dashboard.html', customer=customer, mt940_content=mt940_content)
+    return render_template('dashboard.html', customer = customer, mt940_content = mt940_content)
 
 
-#---------------------------------------
+# ---------------------------------------
 
 @app.route('/logout')
 def logout():
@@ -160,10 +163,10 @@ def logout():
     return redirect(url_for('login'))
 
 
-
 @app.route("/test")
 def test():
     return "Connected to the data base!"
+
 
 if __name__ == '__main__':
     app.debug = True
