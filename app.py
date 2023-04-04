@@ -1,5 +1,5 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
-from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+from flask import Flask, render_template, request, flash, redirect, url_for, session
+from flask_login import LoginManager, login_user, logout_user, current_user, login_required
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from models.customer import Customer
@@ -36,12 +36,20 @@ ca = certifi.where()
 
 #---------------------------------------
 
+#@app.route('/')
+#def index():
+    #if 'customer_id' in session:
+        #return redirect(url_for('dashboard'))
+    #else:
+        #return redirect(url_for('login'))
+        
 @app.route('/')
 def index():
-    if 'customer_id' in session:
-        return redirect(url_for('dashboard'))
-    else:
-        return redirect(url_for('login'))
+    if current_user.is_authenticated:
+        # User is logged in, render index template
+        return render_template('index.html')
+    # User is not authenticated, render index template anyway
+    return render_template('index.html')
 
 
 #---------------------------------------
@@ -94,21 +102,30 @@ def login():
         password = request.form['password']
 
         customer = Customer.query.filter_by(username=username).first()
+        admin = Admin.query.filter_by(username=username).first()
 
-        if customer is None:
+        if customer is None and admin is None:
             flash('Invalid username')
             return redirect(url_for('login'))
 
-        if not check_password_hash(customer.password_, password):
+        if customer is not None:
+            user = customer
+            session_key = 'customer_id'
+        elif admin is not None:
+            user = admin
+            session_key = 'admin_id'
+
+        if not check_password_hash(user.password_, password):
             flash('Invalid password')
             return redirect(url_for('login'))
 
-        session['customer_id'] = customer.customer_id
+        session[session_key] = user.id
 
-        login_user(customer)
+        login_user(user)
         return redirect(url_for('dashboard'))
 
     return render_template('login.html')
+
 
 #---------------------------------------
 
@@ -144,8 +161,6 @@ def logout():
 
 
 
-
-#test to insert data to the data base
 @app.route("/test")
 def test():
     return "Connected to the data base!"

@@ -26,7 +26,7 @@ channel.queue_declare(queue='mt940_updates')
 # Define callback function to handle incoming messages
 def callback(ch, method, properties, body):
     # Extract relevant information from message
-    mt940_doc = pymongo.collection.Collection.decode(body)
+    mt940_doc = pymongo.collection.Collection.from_dict(body)
     amount = mt940_doc['amount']['amount']
     currency = mt940_doc['amount']['currency']
     customer_reference = mt940_doc['customer_reference']
@@ -41,7 +41,7 @@ def callback(ch, method, properties, body):
         conn.execute("""
             INSERT INTO public.mt940_file (amount, currency, customer_reference, bank_reference, transaction_details, final_closing_balance, available_balance, forward_available_balance)
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s)""",
-            (amount, currency, customer_reference, bank_reference, transaction_details, final_closing_balance, available_balance, forward_available_balance))
+            (amount, currency, customer_reference, bank_reference, transaction_details, final_closing_balance, available_balance, forward_available_balance,))
     print("Message processed:", body)
 
 
@@ -53,3 +53,6 @@ for change in change_stream:
     # Send change document as message to RabbitMQ
     channel.basic_publish(exchange='', routing_key='mt940_updates', body=pymongo.collection.Collection.encode(change['fullDocument']))
     print("Message sent to RabbitMQ:", change['fullDocument'])
+
+# Close RabbitMQ connection
+connection.close()

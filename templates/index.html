@@ -1,39 +1,63 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Transparent Finances for Sports Clubs</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='/static/stylesheet.css') }}">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quintor</title>
+    <link href="/static/stylesheet.css" rel="stylesheet">
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a href="{{ url_for('index') }}">Home</a></li>
-            {% if current_user.is_authenticated %}
-            <li>You are logged in as {{ current_user.username }}. <a href="{{ url_for('logout') }}">Logout</a></li>
-            {% else %}
-            <li><a href="{{ url_for('login') }}">Login</a></li>
-            <li><a href="{{ url_for('register') }}">Register</a></li>
-            {% endif %}
-        </ul>
-    </nav>
-    <main>
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <ul class="flashes">
-            {% for message in messages %}
-            <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-        {% endwith %}
-        <div class="jumbotron">
-            <h1>Transparent Finances for Sports Clubs</h1>
-            <p>Our application provides sports clubs with the ability to read digital statements from their bank, making their finances more transparent. With a clear and comprehensive view of their financial data, sports clubs can make better financial decisions and have more control over their finances. Our relational database performs data analysis and generates reports, making it easy for sports clubs to track their income and expenses.</p>
-            <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg">Get Started</a>
+    <div class="conatiner">
+        <header>
+            <a href="./index.html">
+                <img src="static/img/quintor.png" alt="quintor" class="logo">
+            </a>
+            <nav>
+                <ul class="nav_links">
+                    <li><a href="{{ url_for('index') }}">Home</a></li>
+                    {% if current_user.is_authenticated %}
+                    <li>You are logged in as {{ current_user.username }}. <a href="{{ url_for('logout') }}">Logout</a></li>
+                    <li><a href="{{ url_for('dashboard') }}">Dashoard</a></li>
+                    {% else %}
+                    <li><a class="cta" href="{{ url_for('login') }}">Login</a></li>
+                    <li><a class="cta" href="{{ url_for('register') }}">Register</a></li>
+                    {% endif %}
+                    <li><a href="#">LOCATION</a></li>
+                    <li><a href="#">SERVICES</a></li>
+                </ul>
+            </nav>
+        </header>
+        <div class="main">
+            <div class="section1">
+            </div>
+            <div class="section2">
+                <div class="section2-img">
+                    <img src="/static/img/section2.jpg">
+                </div>
+                <div class="section2-txt">
+                    <div class="sec2-title">
+                        <h1>How can you join </h1>
+                        <h1>with us?</h1>
+                        <p class="para1">Lorem Ipsum is simply dummy text of the printing and <br>
+                            typesetting industry. Lorem Ipsum has been the industry's <br>
+                            standard dummy text ever since the 1500s, when anting, <br>
+                            remaining essentially unchanged.
+                        </p>
+                        <p class="para2">
+                            It was popularised in the 1960s with the release of Letraset <br>
+                            sheets containing Lorem Ipsum passages, and more recently  <br>
+                            with desktop publishing
+                        </p>
+                        <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg">Get Started</a>
+                    </div>
+                </div>
+            </div>
         </div>
-    </main>
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+        <footer>
+            
+        </footer>
+    </div>
 </body>
 </html>
+

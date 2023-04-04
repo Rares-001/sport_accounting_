@@ -1,1 +1,267 @@
+/* Start of Home Page */
 
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+.conatiner{
+  display: grid;
+  grid-template-rows: auto auto auto auto;
+}
+li, a, button{
+  font-family: sans-serif;
+  font-weight: 500;
+  font-size: 16px;
+  color: #edf0f1;
+  text-decoration: none;
+}
+
+header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px 10%;
+  height: 15vh;
+  background-color: #007B73;
+}
+.logo{
+  cursor: pointer;
+}
+
+header img{
+  height: 15vh;
+  width: auto;
+}
+
+.nav_links{
+  list-style: none;
+}
+.nav_links li{
+  display: inline-block;
+  padding: 0px 20px;
+}
+.nav_links li a{
+  transition: all 0.3s ease 0s;
+}
+
+.nav_links li a:hover{
+  color: #E8BF2B;
+}
+
+.cta button {
+  padding: 9px 20px;
+  background-color: #E8BF2B;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease 0s;
+}
+.section1{
+  background-image: url("/static/img/section1.png");
+  background-size: 100%;
+  height: 80vh;
+  width:99vw;
+  background-repeat: no-repeat;
+}
+.main{
+  display: grid;
+  grid-template-rows: 62vh 50vh 30vh;
+}
+
+.section2{
+  background-color: #EDCECC;
+  background-size: 100%;
+  height: 80vh;
+  width:99vw;
+  background-repeat: no-repeat;
+}
+
+.section2{
+  display: grid;
+  grid-template-columns: 45vw 50vw;
+}
+
+.section2-img img{
+  height: 45vh;
+  width: 20vw;
+  margin-top: 25vh;
+  margin-left: 10vw;
+}
+.section2-txt{
+  margin-top: 25vh;
+}
+.para1{
+  margin-top: 5vh;
+  font-size: 20px;
+}
+.para2{
+  margin-top: 5vh;
+  font-size: 20px;
+  padding-bottom: 2vh;
+}
+
+.section2 button {
+  padding: 9px 20px;
+  background-color: rgb(204, 19, 19);
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease 0s;
+}
+
+footer{
+  display: grid;
+  height: 25vh;
+  background-color: #007B73;
+}
+
+/* End of Home page */
+
+
+/* Start of Sing-Up page */
+.signup-main{
+  background-color: #EDCECC;
+  height: 80vh;
+}
+.signup-base{
+  background-color: #D9D9D9;
+  height: 80vh;
+  width: 80vw;
+  margin-left: 10vw;
+  padding-top: 10vh;
+}
+
+.signup-title{
+  font-size: 30px;
+  margin-left: 40vw;
+  padding: 2vh;
+}
+.signup-form{
+  margin-left: 25vw;
+}
+input{
+  width: 40vw;
+  height: 4vh;
+  margin-top: 1vh;
+  margin-bottom: 1vh;
+  border-radius: 5px;
+}
+#submit{
+  background-color: #007B73;
+}
+input:hover{
+  background-color: #923061;
+}
+#submit:hover{
+  background-color: #923061;
+}
+
+/* End of Sing-Up page */
+
+ /* Start of Login page */
+ .login-main{
+  background-color: #EDCECC;
+  height: 80vh;
+}
+.login-base{
+  background-color: #D9D9D9;
+  height: 80vh;
+  width: 80vw;
+  margin-left: 10vw;
+  padding-top: 10vh;
+}
+
+.login-title{
+  font-size: 30px;
+  margin-left: 40vw;
+  padding: 2vh;
+}
+.login-form{
+  margin-left: 25vw;
+}
+
+ /* End of Login page */
+
+/* start of user page */
+.user-main{
+  background-color: cadetblue;
+  height: 20vh;
+  width: 100vw;
+}
+.user-welcome{
+  font-size: 30px;
+  color: #D9D9D9;
+  margin-left: 20vw;
+  padding: 6vh;
+}
+.user-account{
+  background-color: #D9D9D9;
+  height: 15vh;
+  width: 70vw;
+  margin-left: 15vw;
+  margin-top: 3vh;
+  border-radius: 10px;
+}
+.user-name{
+  font-size: 20px;
+  padding: 1vh;
+  margin-left: 10vw;
+  color: black;
+}
+.user-acc-type{
+  margin-left: 11vw;
+  color: black;
+}
+.user-number{
+  margin-left: 11vw;
+  color: black;
+}
+
+/* End of user page */
+
+/* Start of accounting Page */
+.accouting-conatiner{
+display: grid;
+grid-template-rows: auto 100vh auto;
+}
+.acc-main{
+display: grid;
+grid-template-columns: 50vw 50vw;
+background-color: #EDCECC;
+padding: 5vh;
+}
+.acc-invoice{
+height: 30vh;
+width: 30vw;
+background-color: aliceblue;
+padding: 3vh;
+border: 2px solid black;
+border-radius: 5px;
+}
+.acc-expenses{
+height: 30vh;
+width: 30vw;
+background-color: aliceblue;
+padding: 3vh;
+border: 2px solid black;
+border-radius: 5px;
+}
+.acc-profit{
+height: 30vh;
+width: 30vw;
+background-color: aliceblue;
+padding: 3vh;
+border: 2px solid black;
+border-radius: 5px;
+}
+.acc-sales{
+height: 30vh;
+width: 30vw;
+background-color: aliceblue;
+padding: 3vh;
+border: 2px solid black;
+border-radius: 5px;
+}
+
+/* End of accounting page */
