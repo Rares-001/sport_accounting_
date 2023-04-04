@@ -1,62 +1,71 @@
-{% extends "base.html" %}
-
-{% block title %}Register{% endblock %}
-
 {% block content %}
-<div class="container">
-  <h1>Register</h1>
-  <form method="POST" action="{{ url_for('register') }}">
-      
-    <div class="form-group">
-      <label for="username">Username</label>
-      <input type="text" class="form-control" id="username" name="username" required>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link href="static/stylesheet.css" rel="stylesheet">
+</head>
+<body>
+    <div class="signup-container">
+        <header>
+            <a href="./index.html">
+                <img src="static/img/quintor.png" alt="quintor" class="logo">
+            </a>
+            <nav>
+                <ul class="nav_links">
+                    <li><a href="{{ url_for('index') }}">Home</a></li>
+                    {% if current_user.is_authenticated %}
+                    <li>You are logged in as {{ current_user.username }}. <a href="{{ url_for('logout') }}">Logout</a></li>
+                    <li><a href="{{ url_for('dashboard') }}">Dashoard</a></li>
+                    {% else %}
+                    <li><a class="cta" href="{{ url_for('login') }}">Login</a></li>
+                    <li><a class="cta" href="{{ url_for('register') }}">Register</a></li>
+                    {% endif %}
+                    <li><a href="#">LOCATION</a></li>
+                    <li><a href="#">SERVICES</a></li>
+                </ul>
+            </nav>
+        </header>
+        <div class="signup-main">
+            <div class="signup-base">
+                <p1 class="signup-title"> Sign Up form</p1>
+                <form method="POST" action="{{ url_for('register') }}">
+                    <label for="fname">Username:</label><br>
+                    <input type="text" class="form-control" id="username" name="username" required><br>
+                    <label for="fname">First name:</label><br>
+                    <input type="text" class="form-control" id="first_name" name="first_name" required><br>
+                    <label for="lname">Last name:</label><br>
+                    <input type="text" class="form-control" id="last_name" name="last_name" required><br>
+                    <label for="email">Email:</label><br>
+                    <input type="email" class="form-control" id="email" name="email" required><br>
+                    <label for="email">Phone number:</label><br>
+                    <input type="tel" class="form-control" id="phone_number" name="phone_number" required><br>
+                    <label for="email">Address:</label><br>
+                    <input type="text" class="form-control" id="address" name="address" required><br>
+                    <label for="password">Password</label><br>
+                    <input type="password" class="form-control" id="password" name="password" required><br>
+                    <label for="password">Confirm Password</label><br>
+                    <input type="password" class="form-control" id="confirm_password" name="confirm_password" required><br>
+                    <label for="club">Club</label>
+                        <select class="form-control" id="club" name="club">
+                          {% for club in clubs %}
+                            <option value="{{ club.clubid }}">{{ club.clubname }}</option>
+                          {% endfor %}
+                        </select>
+                    <p> By creating an account, you agree to our Terms of Conditions</p>
+                    <input type="submit" id="submit" name="Submit" value="Create Account">
+                </form>
+            </div>
+        </div>
     </div>
-    
-    <div class="form-group">
-      <label for="first_name">First name</label>
-      <input type="text" class="form-control" id="first_name" name="first_name" required>
-    </div>
-    
-    <div class="form-group">
-      <label for="last_name">Last name</label>
-      <input type="text" class="form-control" id="last_name" name="last_name" required>
-    </div>
-    
-    <div class="form-group">
-      <label for="password">Password</label>
-      <input type="password" class="form-control" id="password" name="password" required>
-    </div>
-    
-    <div class="form-group">
-      <label for="confirm_password">Confirm Password</label>
-      <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
-    </div>
-    
-    <div class="form-group">
-      <label for="email">Email</label>
-      <input type="email" class="form-control" id="email" name="email" required>
-    </div>
-    
-    <div class="form-group">
-      <label for="phone_number">Phone number</label>
-      <input type="tel" class="form-control" id="phone_number" name="phone_number" required>
-    </div>
-    
-    <div class="form-group">
-      <label for="address">Address (receipt)</label>
-      <input type="text" class="form-control" id="address" name="address" required>
-    </div>
-    
-    <div class="form-group">
-      <label for="club">Club</label>
-      <select class="form-control" id="club" name="club">
-        {% for club in clubs %}
-          <option value="{{ club.clubid }}">{{ club.clubname }}</option>
-        {% endfor %}
-      </select>
-    </div>
-    
-    <button type="submit" class="btn btn-primary">Register</button>
-  </form>
-</div>
+    <footer>
+            
+    </footer>
+</body>
+</html>
 {% endblock %}
+
+

@@ -1,16 +1,48 @@
-{% extends 'base.html' %}
-
 {% block content %}
-  <h1>Dashboard</h1>
 
-  <h2>Welcome {{ customer.first_name }} {{ customer.last_name }}!</h2>
-  <ul>
-    <li>Username: {{ customer.username }}</li>
-    <li>Email: {{ customer.email }}</li>
-    <li>Phone Number: {{ customer.phone_number }}</li>
-    <li>Address: {{ customer.address }}</li>
-  </ul>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quintor</title>
+    <link href="/static/stylesheet.css" rel="stylesheet">
+</head>
+<body>
+    <div class="conatiner">
+        <header>
+            <a href="./index.html">
+                <img src="static/img/quintor.png" alt="quintor" class="logo">
+            </a>
+            <nav>
+                <ul class="nav_links">
+                    <li><a href="{{ url_for('index') }}">Home</a></li>
+                    {% if current_user.is_authenticated %}
+                    <li>You are logged in as {{ current_user.username }}. <a href="{{ url_for('logout') }}">Logout</a></li>
+                    <li><a href="{{ url_for('dashboard') }}">Dashoard</a></li>
+                    {% else %}
+                    <li><a class="cta" href="{{ url_for('login') }}">Login</a></li>
+                    <li><a class="cta" href="{{ url_for('register') }}">Register</a></li>
+                    {% endif %}
+                    <li><a href="#">LOCATION</a></li>
+                    <li><a href="#">SERVICES</a></li>
+                </ul>
+            </nav>
+        </header>
+        <h1>Dashboard</h1>
 
-  <p>MT940 content:</p>
-  <pre>{{ mt940_content }}</pre>
-{% endblock %}
+        <h2>Welcome {{ customer.first_name }} {{ customer.last_name }}!</h2>
+        <ul>
+          <li>Username: {{ customer.username }}</li>
+          <li>Email: {{ customer.email }}</li>
+          <li>Phone Number: {{ customer.phone_number }}</li>
+          <li>Address: {{ customer.address }}</li>
+        </ul>
+
+        <p>MT940 content:</p>
+        <pre>{{ mt940_content }}</pre>
+      {% endblock %}
+        </body>
+</html>
+  

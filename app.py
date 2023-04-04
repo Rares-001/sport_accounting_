@@ -4,7 +4,6 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from models.customer import Customer
 from models.club import Club
-from models.admin import Admin
 from models.bank import Bank
 from database import db as db_instance
 from sqlalchemy import text
@@ -101,30 +100,22 @@ def register():
 @app.route('/login', methods = ['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        identifier = request.form['identifier']
+        username = request.form['username']
         password = request.form['password']
 
-        customer = Customer.query.filter_by(username = identifier).first()
-        admin = Admin.query.filter_by(email = identifier).first()
+        customer = Customer.query.filter_by(username = username).first()
 
-        if customer is None and admin is None:
-            flash('Invalid username or email')
+        if customer is None:
+            flash('Invalid username')
             return redirect(url_for('login'))
 
-        if customer is not None:
-            user = customer
-            session_key = 'customer_id'
-        elif admin is not None:
-            user = admin
-            session_key = 'admin_id'
-
-        if not check_password_hash(user.password_, password):
+        if not check_password_hash(customer.password_, password):
             flash('Invalid password')
             return redirect(url_for('login'))
 
-        session[session_key] = user.id
+        session['customer_id'] = customer.customer_id
 
-        login_user(user)
+        login_user(customer)
         return redirect(url_for('dashboard'))
 
     return render_template('login.html')

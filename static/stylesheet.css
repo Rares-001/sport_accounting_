@@ -265,3 +265,76 @@ border-radius: 5px;
 }
 
 /* End of accounting page */
+
+/* Start of Sing-Up page */
+
+.signup-main{
+  background-color: #EDCECC;
+  height: 80vh;
+}
+
+.signup-base{
+  background-color: #D9D9D9;
+  height: 80vh;
+  width: 80vw;
+  margin-left: 10vw;
+  padding-top: 10vh;
+}
+
+.signup-title{
+  font-size: 30px;
+  margin-left: 40vw;
+  padding: 2vh;
+}
+
+.signup-form{
+  margin-left: 25vw;
+}
+
+input{
+  width: 40vw;
+  height: 4vh;
+  margin-top: 1vh;
+  margin-bottom: 1vh;
+  border-radius: 5px;
+}
+
+#submit{
+  background-color: #007B73;
+}
+
+input:hover{
+  background-color: #923061;
+}
+
+#submit:hover{
+  background-color: #923061;
+}
+
+/* End of Sing-Up page */
+
+/* Start of Login page */
+
+   .login-main{
+    background-color: #EDCECC;
+    height: 80vh;
+  }
+
+  .login-base{
+    background-color: #D9D9D9;
+    height: 80vh;
+    width: 80vw;
+    margin-left: 10vw;
+    padding-top: 10vh;
+  }
+
+  .login-title{
+    font-size: 30px;
+    margin-left: 40vw;
+    padding: 2vh;
+  }
+
+.login-form{
+    margin-left: 25vw;
+    
+    /* End of Login page */
