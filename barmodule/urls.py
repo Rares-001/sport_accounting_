@@ -1,4 +1,4 @@
-"""barmodule URL Configuration
+"""barModule URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.1/topics/http/urls/
@@ -24,4 +24,5 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('store/', include('store.urls')),
     path('cart/', include('carts.urls')),
+    path('accounts/', include('accounts.urls'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

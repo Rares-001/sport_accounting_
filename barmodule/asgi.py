@@ -1,5 +1,5 @@
 """
-ASGI config for barmodule project.
+ASGI config for barModule project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'barmodule.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'barModule.settings')
 
 application = get_asgi_application()
