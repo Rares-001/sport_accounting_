@@ -1,5 +1,4 @@
 import mt940
-import json
 from pymongo import MongoClient
 
 client = MongoClient("mongodb+srv://Terry:PA$$W0RD@cluster0.y9osbya.mongodb.net/?retryWrites=true&w=majority")

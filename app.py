@@ -9,7 +9,6 @@ from flask import Flask, render_template, request, flash, redirect, url_for, ses
 from flask_login import LoginManager, login_user, current_user, login_required
 from flask_table import Table, Col
 from flask_wtf import FlaskForm
-from mt940 import json as mt940_json
 from sqlalchemy import create_engine
 from werkzeug.security import generate_password_hash, check_password_hash
 from wtforms import FileField, SubmitField
@@ -18,6 +17,7 @@ from wtforms.validators import InputRequired
 from database import db as db_instance
 from models.club import Club
 from models.customer import Customer
+from models.admin import Admin
 
 app = Flask(__name__)
 app.config.from_object('config')
@@ -116,28 +116,30 @@ def register():
 
 # ---------------------------------------
 
-@app.route('/login', methods = ['GET', 'POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
 
-        customer = Customer.query.filter_by(username = username).first()
+        # Check if the user is a Customer
+        customer = Customer.query.filter_by(username=username).first()
+        if customer is not None and check_password_hash(customer.password_, password):
+            session['customer_id'] = customer.customer_id
+            login_user(customer)
+            return redirect(url_for('dashboard'))
 
-        if customer is None:
-            flash('Invalid username')
-            return redirect(url_for('login'))
+        # Check if the user is an Admin
+        admin = Admin.query.filter_by(email=username).first()
+        if admin is not None and check_password_hash(admin.password_, password):
+            session['admin_id'] = admin.adminid
+            return redirect(url_for('admin'))
 
-        if not check_password_hash(customer.password_, password):
-            flash('Invalid password')
-            return redirect(url_for('login'))
-
-        session['customer_id'] = customer.customer_id
-
-        login_user(customer)
-        return redirect(url_for('dashboard'))
+        flash('Invalid username or password')
+        return redirect(url_for('login'))
 
     return render_template('login.html')
+
 
 
 # ---------------------------------------
