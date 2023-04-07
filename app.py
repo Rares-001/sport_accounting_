@@ -116,21 +116,21 @@ def register():
 
 # ---------------------------------------
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods = ['GET', 'POST'])
 def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
 
         # Check if the user is a Customer
-        customer = Customer.query.filter_by(username=username).first()
+        customer = Customer.query.filter_by(username = username).first()
         if customer is not None and check_password_hash(customer.password_, password):
             session['customer_id'] = customer.customer_id
             login_user(customer)
             return redirect(url_for('dashboard'))
 
         # Check if the user is an Admin
-        admin = Admin.query.filter_by(email=username).first()
+        admin = Admin.query.filter_by(email = username).first()
         if admin is not None and check_password_hash(admin.password_, password):
             session['admin_id'] = admin.adminid
             return redirect(url_for('admin'))
@@ -139,7 +139,6 @@ def login():
         return redirect(url_for('login'))
 
     return render_template('login.html')
-
 
 
 # ---------------------------------------
