@@ -8,56 +8,57 @@
     <link href="/static/stylesheet.css" rel="stylesheet">
 </head>
 <body>
-    <div class="conatiner">
-        <header>
-            <a href="./index.html">
-                <img src="static/img/quintor.png" alt="quintor" class="logo">
-            </a>
-            <nav>
-                <ul class="nav_links">
-                    <li><a href="{{ url_for('index') }}">Home</a></li>
-                    {% if current_user.is_authenticated %}
-                    <li>You are logged in as {{ current_user.username }}. <a href="{{ url_for('logout') }}">Logout</a></li>
+<div class="conatiner">
+    <header>
+        <a href="./index.html">
+            <img src="static/img/quintor.png" alt="quintor" class="logo">
+        </a>
+        <nav>
+            <ul class="nav_links">
+                <li><a href="{{ url_for('index') }}">Home</a></li>
+                {% if current_user.is_authenticated %}
+                    <li>You are logged in as {{ current_user.username }}. <a href="{{ url_for('logout') }}">Logout</a>
+                    </li>
                     <li><a href="{{ url_for('dashboard') }}">Dashoard</a></li>
-                    {% else %}
+                {% else %}
                     <li><a class="cta" href="{{ url_for('login') }}">Login</a></li>
                     <li><a class="cta" href="{{ url_for('register') }}">Register</a></li>
-                    {% endif %}
-                    <li><a href="#">LOCATION</a></li>
-                    <li><a href="#">SERVICES</a></li>
-                </ul>
-            </nav>
-        </header>
-        <div class="main">
-            <div class="section1">
+                {% endif %}
+                <li><a href="#">LOCATION</a></li>
+                <li><a href="#">SERVICES</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="main">
+        <div class="section1">
+        </div>
+        <div class="section2">
+            <div class="section2-img">
+                <img src="/static/img/section2.jpg">
             </div>
-            <div class="section2">
-                <div class="section2-img">
-                    <img src="/static/img/section2.jpg">
-                </div>
-                <div class="section2-txt">
-                    <div class="sec2-title">
-                        <h1>How can you join </h1>
-                        <h1>with us?</h1>
-                        <p class="para1">Lorem Ipsum is simply dummy text of the printing and <br>
-                            typesetting industry. Lorem Ipsum has been the industry's <br>
-                            standard dummy text ever since the 1500s, when anting, <br>
-                            remaining essentially unchanged.
-                        </p>
-                        <p class="para2">
-                            It was popularised in the 1960s with the release of Letraset <br>
-                            sheets containing Lorem Ipsum passages, and more recently  <br>
-                            with desktop publishing
-                        </p>
-                        <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg">Get Started</a>
-                    </div>
+            <div class="section2-txt">
+                <div class="sec2-title">
+                    <h1>How can you join </h1>
+                    <h1>with us?</h1>
+                    <p class="para1">Lorem Ipsum is simply dummy text of the printing and <br>
+                        typesetting industry. Lorem Ipsum has been the industry's <br>
+                        standard dummy text ever since the 1500s, when anting, <br>
+                        remaining essentially unchanged.
+                    </p>
+                    <p class="para2">
+                        It was popularised in the 1960s with the release of Letraset <br>
+                        sheets containing Lorem Ipsum passages, and more recently <br>
+                        with desktop publishing
+                    </p>
+                    <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg">Get Started</a>
                 </div>
             </div>
         </div>
-        <footer>
-            
-        </footer>
     </div>
+    <footer>
+
+    </footer>
+</div>
 </body>
 </html>
 
