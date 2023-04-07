@@ -1,4 +1,6 @@
+import json
 import pprint
+
 import certifi
 import mt940
 import pymongo
@@ -9,11 +11,11 @@ from flask_login import LoginManager, login_user, current_user, login_required
 from flask_table import Table, Col
 from flask_wtf import FlaskForm
 from mt940 import json
-from sqlalchemy.dialects.postgresql import psycopg2
+from sqlalchemy import create_engine
 from werkzeug.security import generate_password_hash, check_password_hash
 from wtforms import FileField, SubmitField
 from wtforms.validators import InputRequired
-from sqlalchemy import create_engine
+
 from database import db as db_instance
 from models.club import Club
 from models.customer import Customer
@@ -32,11 +34,14 @@ db_instance.init_app(app)
 
 client = pymongo.MongoClient("mongodb+srv://Terry:PA$$W0RD@cluster0.y9osbya.mongodb.net/?retryWrites=true&w=majority",
                              tlsCAFile = certifi.where())
+
 db = client.get_database("MT940_id")
 
-# MT940_COLLECTION = "MTFiles_records" old connection
+MT940_COLLECTION = "MTFiles_records"
+
 records = db.MTFiles_records
-# collection = db[MT940_COLLECTION]
+
+collection = db[MT940_COLLECTION]
 
 RawFile = records.find()
 
@@ -57,7 +62,7 @@ class UploadFileForm(FlaskForm):
 
 
 # ---------------------------------------
-@app.route("/", methods = ["GET", "POST"])
+@app.route("/adminHome.html", methods = ["GET", "POST"])
 # This is the Home page for the treaser
 @app.route('/adminHome.html')
 def admin():
@@ -66,8 +71,6 @@ def admin():
 
 # ---------------------------------------
 # This is the upload page/parcel to upload the MT940 files
-import json
-
 
 @app.route('/upload.html', methods = ["GET", "POST"])
 def upload_files():
