@@ -1,7 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
 from pymongo import MongoClient
-from flask_pymongo import pymongo
-from sqlalchemy import Column, Integer, String, ForeignKey
 
 db = SQLAlchemy()
 
