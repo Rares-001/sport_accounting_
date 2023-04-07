@@ -3,7 +3,8 @@ import pika
 from sqlalchemy import create_engine
 
 # Connect to MongoDB Atlas
-MONGO_CONNECTION_STRING = "mongodb+srv://%3CRares%3E:%3Cadmin%3E@cluster0.y9osbya.mongodb.net/?retryWrites=true&w=majority"
+MONGO_CONNECTION_STRING = "mongodb+srv://%3CRares%3E:%3Cadmin%3E@cluster0.y9osbya.mongodb.net/?retryWrites=true&w" \
+                          "=majority"
 
 mongo_client = pymongo.MongoClient(MONGO_CONNECTION_STRING, ssl=True)
 

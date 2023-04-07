@@ -13,12 +13,10 @@ from pymongo import MongoClient
 import psycopg2
 
 
-
-
-
 # Connectiong to the NoSql Database
 client = MongoClient("mongodb+srv://Terry:PA$$W0RD@cluster0.y9osbya.mongodb.net/?retryWrites=true&w=majority")
 db = client.get_database('MT940_id')
+
 records = db.MTFiles_records
 RawFile = records.find()
 

@@ -1,16 +1,22 @@
-from flask import Flask, render_template, request, flash, redirect, url_for, session
-from flask_login import LoginManager, login_user, logout_user, current_user, login_required
-from flask_sqlalchemy import SQLAlchemy
-from werkzeug.security import generate_password_hash, check_password_hash
-from models.customer import Customer
-from models.club import Club
-from models.bank import Bank
-from database import db as db_instance
-from sqlalchemy import text
-import pymongo
-from pymongo import MongoClient
+import pprint
 import certifi
-import ssl
+import mt940
+import pymongo
+import xmltodict
+from flask import Flask, render_template, request
+from flask import flash, redirect, url_for, session
+from flask_login import LoginManager, login_user, current_user, login_required
+from flask_table import Table, Col
+from flask_wtf import FlaskForm
+from mt940 import json
+from sqlalchemy.dialects.postgresql import psycopg2
+from werkzeug.security import generate_password_hash, check_password_hash
+from wtforms import FileField, SubmitField
+from wtforms.validators import InputRequired
+from sqlalchemy import create_engine
+from database import db as db_instance
+from models.club import Club
+from models.customer import Customer
 
 app = Flask(__name__)
 app.config.from_object('config')
@@ -24,24 +30,143 @@ login_manager.init_app(app)
 
 db_instance.init_app(app)
 
-client = pymongo.MongoClient("mongodb+srv://Rares:admin@cluster0.y9osbya.mongodb.net/?retryWrites=true&w=majorit",
+client = pymongo.MongoClient("mongodb+srv://Terry:PA$$W0RD@cluster0.y9osbya.mongodb.net/?retryWrites=true&w=majority",
                              tlsCAFile = certifi.where())
-db = client.get_database("test")
+db = client.get_database("MT940_id")
 
-MT940_COLLECTION = "MTFiles_records"
-collection = db[MT940_COLLECTION]
+# MT940_COLLECTION = "MTFiles_records" old connection
+records = db.MTFiles_records
+# collection = db[MT940_COLLECTION]
+
+RawFile = records.find()
+
+ALLOWED_EXTENSIONS = {'txt', 'sta'}
+
+mt940file = "mt940test.sta"
 
 ca = certifi.where()
+
+engine = create_engine('postgresql://postgres:Tex1game!@localhost/postgresDB')
 
 
 # ---------------------------------------
 
-# @app.route('/')
-# def index():
-# if 'customer_id' in session:
-# return redirect(url_for('dashboard'))
-# else:
-# return redirect(url_for('login'))
+class UploadFileForm(FlaskForm):
+    file = FileField("File", validators = [InputRequired()])
+    submit = SubmitField("Upload File")
+
+
+# ---------------------------------------
+@app.route("/", methods = ["GET", "POST"])
+# This is the Home page for the treaser
+@app.route('/adminHome.html')
+def admin():
+    return render_template('adminHome.html')
+
+
+# ---------------------------------------
+# This is the upload page/parcel to upload the MT940 files
+import json
+
+
+@app.route('/upload.html', methods = ["GET", "POST"])
+def upload_files():
+    if request.method == 'POST':
+        file = request.files['file']
+        transactions = mt940.parse(file)
+
+        print('Transactions:')
+        print(transactions)
+        pprint.pprint(transactions.data)
+
+        for transaction in transactions:
+            print('Transaction: ', transaction)
+            pprint.pprint(transaction.data)
+            mt940.tags.BalanceBase.scope = mt940.models.Transaction
+
+        transactions = mt940.models.Transactions(processors = dict(
+            pre_statement = [
+                mt940.processors.add_currency_pre_processor('EUR'),
+            ],
+        ))
+        transactions = mt940.parse(file)
+
+        # Use the built-in json module to convert the transaction object to a JSON string
+        translated = json.dumps(transactions, indent = 4)
+
+        FinalVersion = json.loads(translated)
+        print(translated)
+        records.insert_one(FinalVersion)
+    return render_template("upload.html")
+
+
+# ---------------------------------------
+# creating the most important columns in the database to show to the admin
+
+class Results(Table):
+    id = Col('transactionid', show = True)
+    bankid = Col('bankid')
+    user = Col('customerid')
+    date = Col('date')
+    amount = Col('amount')
+    currency = Col('currency')
+    status = Col('status')
+    transactionDetail = Col('transaction_detail')
+
+
+# ---------------------------------------
+# choosing which table to get information
+def get_results():
+    conn = engine.connect()
+    results = conn.execute("SELECT * FROM transaction").fetchall()
+    conn.close()
+    return results
+
+
+# ---------------------------------------
+# This is the transaction page which will show you the Raw transactions
+
+@app.route('/transactions.html')
+def transactions():
+    results = get_results()
+    table = Results(results)
+    return render_template('transactions.html', table = table)
+
+
+# ---------------------------------------
+# This is the upload of the xml file
+@app.route('/xmlUpload.html', methods = ["GET", "POST"])
+def xmlUpload():
+    if request.method == 'POST':
+        file = request.files['fileXml']
+        transactions = mt940.parse(file)
+
+        print('Transactions:')
+        print(transactions)
+        pprint.pprint(transactions.data)
+
+        for transaction in transactions:
+            print('Transaction: ', transaction)
+            pprint.pprint(transaction.data)
+            mt940.tags.BalanceBase.scope = mt940.models.Transaction
+
+        transactions = mt940.models.Transactions(processors = dict(
+            pre_statement = [
+                mt940.processors.add_currency_pre_processor('EUR'),
+            ],
+        ))
+        transactions = mt940.parse(file)
+        translated = json.dumps(transaction, indent = 4, cls = mt940.JSONEncoder)
+        data = json.loads(translated)
+        xml_string = xmltodict.unparse({'mt940': data}, pretty = False)
+
+        with open('mt940.xml', 'w') as f:
+            f.write(xml_string)
+
+    return render_template('xmlUpload.html')
+
+
+# ---------------------------------------
 
 @app.route('/')
 def index():
